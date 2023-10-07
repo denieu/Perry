@@ -6,22 +6,22 @@
 /*
   Para facilidade no entendimento do codigo este está dividido em abas
 
-  Aba 1 - ArduinoPerry    : Aqui estão as configurações iniciais, os parametros que são utilizados no PID e o cabeçalho das funções utilizadas
-  Aba 2 - 1_Home    : Aqui estão definidos as função void setup e void loop, obrigatorias para a execução do codigo
-  Aba 3 - 2_Setups  : Aqui estão as funções que realizam os setups inciais do Arduino
-  Aba 4 - 3_Sensors : Aqui estão as funções que realizam as leituras dos sensores e geram a variavel da posição da linha
-  Aba 5 - 4_Motors  : Aqui estão as funções responsaveis pelo controle dos motores
-  Aba 6 - 5_PID     : Aqui estão as funções responsaveis por executar o controle PID dos motores
+  Aba 1 - ArduinoPerry : Aqui estão as configurações iniciais, os parametros que são utilizados no PID e o cabeçalho das funções utilizadas
+  Aba 2 - 1_Home       : Aqui estão definidos as função void setup e void loop, obrigatorias para a execução do codigo
+  Aba 3 - 2_Setups     : Aqui estão as funções que realizam os setups inciais do Arduino
+  Aba 4 - 3_Sensors    : Aqui estão as funções que realizam as leituras dos sensores e geram a variavel da posição da linha
+  Aba 5 - 4_Motors     : Aqui estão as funções responsaveis pelo controle dos motores
+  Aba 6 - 5_PID        : Aqui estão as funções responsaveis por executar o controle PID dos motores
 */
 
 //---------------------------------Configurações Iniciais---------------------------------
 
 //Defina aqui a quantidade de sensores utilizados para seguir linha
-#define SENSORS 3
+#define SENSORS 5
 
 //Defina aqui os pinos em que estão conectados os sensores(TCRT5000), para as portas analogicas a porta A0 equivale a ultima porta digital+1, a porta A1 equivale a ultima porta digital+2 e assim por diante
 //Os pinos devem ser definidos na ordem em que eles estão no robo da esquerda para a direita
-const int PINSENSORS[SENSORS] = {15, 16, 17}; //No arduino Nano isso seria igual a = {A0, A1, A2, A3};
+const int PINSENSORS[SENSORS] = {18, 17, 16, 15, 14}; //No Arduino Uno isso seria igual a = {A4, A3, A2, A1, A0};
 
 //Descomente apenas uma das linhas a seguir: Defina aqui qual a cor da linha que o robo ira seguir
 #define LINECOLORBLACK //Descomente se a linha for preta
@@ -50,27 +50,27 @@ const int PINSENSORS[SENSORS] = {15, 16, 17}; //No arduino Nano isso seria igual
 
 //Variaveis de calibração dos sensores(TCRT5000)
 //As calibrações sao relativas ao pinos dos sensores definidos na constante PINSENSORS
-int calibrationMinS[SENSORS] = {415, 90, 550}; //Leitura maxima possivel para cada sensor
-int calibrationMaxS[SENSORS] = {1000, 857, 1000}; //Leitura minima possivel para cada tcrt
+int calibrationMinS[SENSORS] = {200, 220, 100, 330, 200}; //Leitura maxima possivel para cada sensor
+int calibrationMaxS[SENSORS] = {995, 995, 970, 996, 995}; //Leitura minima possivel para cada tcrt
 
 //Essa varivel define a referencia a ser seguida, deve ser um valor entre 0 e 100, onde 0 o robo tem como referencia o sensor mais da esquerda e 100 o mais da direita
 //Para o robo seguir o centro da linha esta constante deve ser definida como 50
-#define REF 50
+#define REF 70
 //Tempo em segundos no qual a interrução de timer do PID ocorre, para o PID rodar em ciclos de tempo fixos e iguais
-#define T 0.005
+#define T 0.001
 //Tempo em microsegundos no qual a interrupção de timer do PID ocorre
 //Um valor em microsegundos deve ser passado como parametro para inicializar a interrupção de timer
-#define INTERRUPTIONTIME T*1000000//Tempo da interrupção em microsegundos
+#define INTERRUPTIONTIME T * 1000000  // Tempo da interrupção em microsegundos
 //Defina aqui quanto da zona linear dos sensores você deseja diminuir em %
 //Isso serve para sempre ter o valor 0 quando totalmente no branco e 1 quando totalmente no preto
-#define LINEARZONECALIBRATION 20
+#define LINEARZONECALIBRATION 15
 
 //Ganho da ação proporcional, a ação proporcional serve para gerar uma ação de controle proporcional ao erro atual, no seguidor de linha geralmente usado para fazer o robo seguir corretamente nas retas
-float K = 2;
+float K = 1.1;
 //Ganho da ação do derivativo, o derivativo serve para compensar a variação brusca do erro, no seguidor de linha geralmente usado para compensar o erro brusco das curvas
-float Td = 0.01;
+float Td = 0;
 //Filtro de frequencia para a ação do derivativo
-float  p = 10 / Td;
+float  p = 0;//10 / Td;
 //A velocidade media sempre é adicionada a ação de controle, assim se o erro for 0, e a ação de controle tambem 0, o robo segue indo para frente seguindo a linha
 int averageSpeed = 30;
 

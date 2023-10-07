@@ -38,5 +38,10 @@ void routinePID(float sensorOut) {
   leftControl = averageSpeed - controlSign;
   rightControl = averageSpeed + controlSign;
 
+  Serial.print(" | leftControl: ");
+  Serial.print(leftControl);
+  Serial.print(" | rightControl: ");
+  Serial.println(rightControl);
+
   onMotors(leftControl, rightControl);
 }

@@ -23,9 +23,11 @@ void initializePins() {
   // }
 
   //Inicialização dos pinos de controle dos motores
+  pinMode(A0, INPUT);
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
   pinMode(A3, INPUT);
+  pinMode(A4, INPUT);
   pinMode(PINENA, OUTPUT);
   pinMode(PININ1, OUTPUT);
   pinMode(PININ2, OUTPUT);

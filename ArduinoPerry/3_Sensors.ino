@@ -1,16 +1,18 @@
 //---------------------------------void tcrtRead---------------------------------
 
 //Leitura analogica dos tcrts, valor de 0 a 1023, onde 0 é igual a 0V e 1023 igual a VCC
-int readAnalogS[SENSORS] = {0, 0, 0};
+int readAnalogS[SENSORS] = {0, 0, 0, 0, 0};
 
 //Função que realiza a leitura analogica dos sensores
 void tcrtRead() {
   // for (int count = 0; count < SENSORS; count++) {
   //   readAnalogS[count] = analogRead(PINSENSORS[count]);
   // }
-  readAnalogS[0] = analogRead(A3);
-  readAnalogS[1] = analogRead(A2);
-  readAnalogS[2] = analogRead(A1);
+  readAnalogS[0] = analogRead(A4);
+  readAnalogS[1] = analogRead(A3);
+  readAnalogS[2] = analogRead(A2);
+  readAnalogS[3] = analogRead(A1);
+  readAnalogS[4] = analogRead(A0);
 
   Serial.print("Sensor 1: ");
   Serial.print(readAnalogS[0]);
@@ -18,6 +20,10 @@ void tcrtRead() {
   Serial.print(readAnalogS[1]);
   Serial.print(" | Sensor 3: ");
   Serial.print(readAnalogS[2]);
+  Serial.print(" | Sensor 4: ");
+  Serial.print(readAnalogS[3]);
+  Serial.print(" | Sensor 5: ");
+  Serial.print(readAnalogS[4]);
 }
 
 //---------------------------------void tcrtMap---------------------------------
@@ -51,6 +57,10 @@ void tcrtMap() {
   Serial.print(readMapS[1]);
   Serial.print(" | MapSensor 3: ");
   Serial.print(readMapS[2]);
+  Serial.print(" | MapSensor 4: ");
+  Serial.print(readMapS[3]);
+  Serial.print(" | MapSensor 5: ");
+  Serial.print(readMapS[4]);
 }
 
 //---------------------------------void generateSensorOut---------------------------------
@@ -83,20 +93,20 @@ float generateSensorOut() {
       sensorOut = 0;
       sensorOutAnt = sensorOut;
       Serial.print(" | Sensor Out: ");
-      Serial.println(sensorOut);
+      Serial.print(sensorOut);
       return sensorOut;
     }
     else if (sensorOutAnt >= 90) {
       sensorOut = 100;
       sensorOutAnt = sensorOut;
       Serial.print(" | Sensor Out: ");
-      Serial.println(sensorOut);
+      Serial.print(sensorOut);
       return sensorOut;
     }
     else {
       sensorOut = sensorOutAnt;
       Serial.print(" | Sensor Out: ");
-      Serial.println(sensorOut);
+      Serial.print(sensorOut);
       return sensorOut;
     }
   }
@@ -113,7 +123,7 @@ float generateSensorOut() {
     sensorOutAnt = sensorOut;
 
     Serial.print(" | Sensor Out: ");
-    Serial.println(sensorOut);
+    Serial.print(sensorOut);
     return sensorOut;
   }
 }
