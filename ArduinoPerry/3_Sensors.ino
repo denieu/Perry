@@ -1,19 +1,29 @@
 //---------------------------------void tcrtRead---------------------------------
 
 //Leitura analogica dos tcrts, valor de 0 a 1023, onde 0 é igual a 0V e 1023 igual a VCC
-int readAnalogS[SENSORS] = {0, 0, 0, 0};
+int readAnalogS[SENSORS] = {0, 0, 0};
 
 //Função que realiza a leitura analogica dos sensores
 void tcrtRead() {
-  for (int count = 0; count < SENSORS; count++) {
-    readAnalogS[count] = analogRead(PINSENSORS[count]);
-  }
+  // for (int count = 0; count < SENSORS; count++) {
+  //   readAnalogS[count] = analogRead(PINSENSORS[count]);
+  // }
+  readAnalogS[0] = analogRead(A3);
+  readAnalogS[1] = analogRead(A2);
+  readAnalogS[2] = analogRead(A1);
+
+  Serial.print("Sensor 1: ");
+  Serial.print(readAnalogS[0]);
+  Serial.print(" | Sensor 2: ");
+  Serial.print(readAnalogS[1]);
+  Serial.print(" | Sensor 3: ");
+  Serial.print(readAnalogS[2]);
 }
 
 //---------------------------------void tcrtMap---------------------------------
 
 //Leitura com o map dos tcrts, valor normalizado de 0 a 100 baseado na calibração predefinida
-float readMapS[SENSORS] = {0, 0, 0, 0};
+float readMapS[SENSORS] = {0, 0, 0};
 
 //Ajusta o valor da linha, conforme definido se está é branca ou preta
 //Ajusta o valor caso a linha seja preta
@@ -32,8 +42,15 @@ void tcrtMap() {
   tcrtRead();
 
   for (int count = 0; count < SENSORS; count++) {
-    readMapS[count] = constrain(map(readMapS[count],  calibrationMinS[count],  calibrationMaxS[count], MAPVALOR1, MAPVALOR2), 0, 100);
+    readMapS[count] = constrain(map(readAnalogS[count],  calibrationMinS[count],  calibrationMaxS[count], MAPVALOR1, MAPVALOR2), 0, 100);
   }
+
+  Serial.print(" | MapSensor 1: ");
+  Serial.print(readMapS[0]);
+  Serial.print(" | MapSensor 2: ");
+  Serial.print(readMapS[1]);
+  Serial.print(" | MapSensor 3: ");
+  Serial.print(readMapS[2]);
 }
 
 //---------------------------------void generateSensorOut---------------------------------
@@ -57,21 +74,29 @@ float generateSensorOut() {
       sensorsInLine++;
     }
   }
+    Serial.print(" | sensorsInLine: ");
+    Serial.print(sensorsInLine);
   //Se não existe nenhum robo na linha
   if (sensorsInLine == 0) {
     //Verifica se o valor do sensorOutAnt era maior que 90 ou menor que 10, se sim satura o sensorOut em 100 ou em 0, se não o mantem com valor anterior
     if (sensorOutAnt <= 10) {
       sensorOut = 0;
       sensorOutAnt = sensorOut;
+      Serial.print(" | Sensor Out: ");
+      Serial.println(sensorOut);
       return sensorOut;
     }
     else if (sensorOutAnt >= 90) {
       sensorOut = 100;
       sensorOutAnt = sensorOut;
+      Serial.print(" | Sensor Out: ");
+      Serial.println(sensorOut);
       return sensorOut;
     }
     else {
       sensorOut = sensorOutAnt;
+      Serial.print(" | Sensor Out: ");
+      Serial.println(sensorOut);
       return sensorOut;
     }
   }
@@ -81,10 +106,14 @@ float generateSensorOut() {
      
     for (int count = 0; count < SENSORS; count++){
       sensorOutAux1 = sensorOutAux1 + (count * readMapS[count]);
-      sensorOutAux2 = sensorOutAux1 + readMapS[count];
+      sensorOutAux2 = sensorOutAux2 + readMapS[count];
     }
     
     sensorOut = 100 / (SENSORS -1) * sensorOutAux1 / sensorOutAux2;
+    sensorOutAnt = sensorOut;
+
+    Serial.print(" | Sensor Out: ");
+    Serial.println(sensorOut);
     return sensorOut;
   }
 }

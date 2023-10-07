@@ -18,11 +18,14 @@ void initializeCalibration() {
 //Função que inicializa os pinos de entrada e saida do Arduino
 void initializePins() {
   //Inicialização dos pinos dos sensores
-  for (int count = 0; count < SENSORS; count++) {
-    pinMode(PINSENSORS[count], INPUT);
-  }
+  // for (int count = 0; count < SENSORS; count++) {
+  //   pinMode(PINSENSORS[count], INPUT);
+  // }
 
   //Inicialização dos pinos de controle dos motores
+  pinMode(A1, INPUT);
+  pinMode(A2, INPUT);
+  pinMode(A3, INPUT);
   pinMode(PINENA, OUTPUT);
   pinMode(PININ1, OUTPUT);
   pinMode(PININ2, OUTPUT);
@@ -39,7 +42,7 @@ void initializePins() {
 //Função que inicializa e faz os setups necessarios das bibliotecas e comunicações
 void initializeLibraries() {
   //Inicializa a comunicação serial
-  //Serial.begin(9600);
+  Serial.begin(9600);
 
   //Inicializa a interrupção de timer do PID
   Timer1.initialize(INTERRUPTIONTIME); //Tempo da interrupção definido em microsegundos

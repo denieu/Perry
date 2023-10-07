@@ -15,7 +15,7 @@ void onLeft(int controlAction) {
       analogWrite(PINENA, controlAction);
     }
     else {
-      controlAction = controlAction - LEFTDEADBAND;
+      controlAction = controlAction + LEFTDEADBAND;
       digitalWrite(PININ1, LOW);
       digitalWrite(PININ2, HIGH);
       analogWrite(PINENA, -controlAction);
@@ -34,13 +34,13 @@ void onRight(int controlAction) {
   }
   else {
     if (controlAction > 0) {
-      controlAction = controlAction + LEFTDEADBAND;
+      controlAction = controlAction + RIGHTDEADBAND;
       digitalWrite(PININ3, HIGH);
       digitalWrite(PININ4, LOW);
       analogWrite(PINENB, controlAction);
     }
     else {
-      controlAction = controlAction - LEFTDEADBAND;
+      controlAction = controlAction + RIGHTDEADBAND;
       digitalWrite(PININ3, LOW);
       digitalWrite(PININ4, HIGH);
       analogWrite(PINENB, -controlAction);
