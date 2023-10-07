@@ -20,10 +20,11 @@ volatile bool flagPID = 0;
 
 //Função que contem a logica da programação, roda infinitamente
 void loop() {
+  onMotors(-100, -100);
   //Condição so roda quando a interrupção de timer seta a variavel flagTimer para 1, a cada T segundos
   if (flagPID == 1) {
     //Função que realiza o controle PID
-    routinePID(generateSensorOut());
+    // routinePID(generateSensorOut());
     
     //Retorna a flag para zero, assim so entra na condição novamente quando a interrupção de timer rodar
     flagPID = 0;
